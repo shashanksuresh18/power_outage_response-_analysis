@@ -1,0 +1,9 @@
+pandas
+numpy
+plotly
+dash
+pytest
+scikit-learn
+black
+flake8
+jupyter
