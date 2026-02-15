@@ -10,3 +10,4 @@ black
 flake8
 jupyter
 nbformat
+gunicorn
