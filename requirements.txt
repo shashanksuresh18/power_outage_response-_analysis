@@ -2,8 +2,11 @@ pandas
 numpy
 plotly
 dash
+dash-bootstrap-components
+pyarrow
 pytest
 scikit-learn
 black
 flake8
 jupyter
+nbformat
