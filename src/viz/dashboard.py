@@ -152,4 +152,4 @@ def update_dashboard(start_date, end_date, regions, causes):
     return kpi_vol, kpi_cust, kpi_rest, kpi_p90, fig_time, fig_cause, fig_hist, fig_scatter
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)
