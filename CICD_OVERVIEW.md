@@ -8,48 +8,45 @@ This document explains the **DevOps Lifecycle** implemented in this project, spe
 
 ### 🖥️ Text-based Flow (ASCII)
 ```text
-[ Developer ] --(git push)--> [ GitHub Actions ]
-                                     |
-    +--------------------------------+--------------------------------+
-    |                                |                                |
- [ PHASE 1: CI ]              [ PHASE 2: DELIVERY ]          [ PHASE 3: CD ]
- (Automated)                  (Manual Release)               (Automated Deploy)
- |                            |                              |
- |-- flake8 (Lint)            |-- Create Docker Image        |-- Push to Azure 
- |-- pytest (Tests)           |-- Approve Report.md          |-- Go Live!
- |-- Pipeline Check           |                              |
+[ YOU ] --(git push)--> [ GitHub Repo ]
+                             |
+                             |-- (Trigger) --> [ GitHub Actions (CI) ]
+                             |                 |-- Linting (flake8)
+                             |                 |-- Testing (pytest)
+                             |                 |-- Pipeline Check
+                             |
+                             |-- (Success) --> [ Render (CD) ]
+                                               |-- Build Docker Image
+                                               |-- Run Pipeline
+                                               |-- DEPLOY LIVE! 🚀
 ```
 
 ### 📊 Professional Render (Mermaid)
 > [!TIP]
-> If you don't see the diagram below, you can view the fully rendered version on your **GitHub repository** under the Actions or Code tab.
+> View the live color diagram here: [GitHub CICD View](https://github.com/shashanksuresh18/power_outage_response-_analysis/blob/main/CICD_OVERVIEW.md)
 
 ```mermaid
 graph TD
     subgraph "1. Continuous Integration (CI)"
-    A[Code: dashboard.py, compute.py] -- "git push" --> B(GitHub Action Trigger)
-    B --> C{Quality Gates}
-    C --> C1[Linting: flake8]
-    C --> C2[Unit Tests: pytest]
-    C --> C3[Data Pipeline Check]
+    A[Code changes] -- "git push" --> B[GitHub repository]
+    B --> C[GitHub Actions]
+    C --> C1[Python Setup]
+    C --> C2[Install Dependencies]
+    C --> C3[Linting & Testing]
     C1 & C2 & C3 --> D{Pass?}
-    D -- No --> E[Fail: Developer Fixes Build]
-    D -- Yes --> F[Integrated into Main Branch]
+    D -- No --> E[Stop: Fix Code]
     end
 
-    subgraph "2. Continuous Delivery (CD-Ready)"
-    F --> G[Build Artifacts: Data Files, Reports]
-    G --> H[Ready for Production]
-    H -- "Manual Approval" --> I[Manual Deployment to Cloud]
-    end
-
-    subgraph "3. Continuous Deployment (Future Goal)"
-    F -- "Automated Flow" --> J[Auto-Deploy to Live URL]
+    subgraph "2. Continuous Deployment (CD)"
+    D -- Yes --> F[Render Deployment]
+    F --> G[Build Docker Container]
+    G --> H[Run Data Pipeline]
+    H --> I[Live Dashboard]
     end
 
     style E fill:#f96,stroke:#333
-    style J fill:#9f9,stroke:#333
-    style F fill:#9cf,stroke:#333
+    style I fill:#9f9,stroke:#333,stroke-width:4px
+    style B fill:#9cf,stroke:#333
 ```
 
 ---
