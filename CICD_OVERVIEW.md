@@ -88,4 +88,58 @@ This is the fully automated version of Delivery. There is no "Manual Approval" s
 3.  **Governance**: In a utility company like UK Power Networks, having a clear "Audit Trail" of which tests passed for which version of the code is vital for safety and regulation.
 
 ---
+
+## 4. Enterprise Architecture: Azure + AKS + Azure DevOps
+
+For a large-scale project at a company like **UK Power Networks**, we would move from GitHub/Render to a professional Azure stack.
+
+### 🖥️ Enterprise Flow (ASCII)
+```text
+ [ YOU ] --(commit)--> [ Azure Repos ]
+                            |
+                            |-- (Build Pipeline) --> [ Azure DevOps ]                   
+                            |                        |-- Run Tests      
+                            |                        |-- Build Docker Image
+                            |                        |-- Push to ACR (Azure Container Registry)
+                            |
+                            |-- (Release Pipeline)--> [ AKS (Azure Kubernetes Service) ]
+                                                     |-- Rolling Update
+                                                     |-- Scaling dashboard pods
+                                                     |-- LOAD BALANCER ---> [ LIVE APP ]
+```
+
+### 📊 Professional Enterprise Render (Mermaid)
+
+```mermaid
+graph LR
+    User[Developer] --> Git[Azure Repos]
+    
+    subgraph "Azure DevOps Pipeline"
+    Git --> Build[Build & Test]
+    Build --> Scan[Security Scan]
+    Scan --> Push[Push to ACR]
+    end
+    
+    subgraph "Azure Cloud Infrastructure"
+    Push --> Registry[(Azure Container Registry)]
+    Registry --> AKS[Azure Kubernetes Service]
+    AKS --> Pod1[Dashboard Pod 1]
+    AKS --> Pod2[Dashboard Pod 2]
+    AKS --> LB(Azure Load Balancer)
+    end
+    
+    LB --> Public((Public URL))
+    
+    style AKS fill:#0078d4,color:#fff
+    style Registry fill:#00ad8c,color:#fff
+    style Build fill:#9cf,stroke:#333
+```
+
+### Key Enterprise Components:
+1.  **Azure DevOps Pipelines**: Instead of GitHub Actions, we use professional YAML pipelines that handle build and release separately.
+2.  **Azure Container Registry (ACR)**: A private, secure place to store your Docker images.
+3.  **AKS (Azure Kubernetes Service)**: This handles "Orchestration." If thousands of users visit your dashboard at once, AKS automatically starts more "Pods" (copies of your container) to handle the traffic.
+4.  **Security Scanning**: At the enterprise level, the CI phase would include automated security scans of your Python libraries to ensure no vulnerabilities.
+
+---
 *Created for the Outage Response Analysis Project - Junior DevOps Portfolio.*
